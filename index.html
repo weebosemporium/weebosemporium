@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Weebos Emporium • Anime Collector'sHub</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+    <style>
+        /* ----- Reset & base ----- */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            background: #0e0b1a;
+            background-image: radial-gradient(circle at 20% 30%, #2a1f4a 0%, #0e0b1a 80%);
+            color: #f0eaff;
+            min-height: 100vh;
+            overflow-x: hidden;
+            line-height: 1.6;
+        }
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        /* ----- Scroll animations (fade-up) ----- */
+        .fade-up {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: opacity 0.8s cubic-bezier(0.2, 0.9, 0.3, 1),
+                        transform 0.8s cubic-bezier(0.2, 0.9, 0.3, 1);
+        }
+        .fade-up.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* ----- Header / Nav ----- */
+        header {
+            padding: 18px 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 16px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+            backdrop-filter: blur(4px);
+            background: rgba(14, 11, 26, 0.6);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #ff6ec7, #ffd93d, #6bcbff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            letter-spacing: -0.5px;
+            text-shadow: 0 0 20px rgba(255, 110, 199, 0.3);
+        }
+        .logo i {
+            -webkit-text-fill-color: initial;
+            color: #ffd93d;
+            margin-right: 6px;
+        }
+        .nav-links {
+            display: flex;
+            gap: 28px;
+            font-weight: 500;
+            font-size: 1rem;
+        }
+        .nav-links a {
+            color: #b8b0d0;
+            transition: color 0.2s;
+            position: relative;
+        }
+        .nav-links a:hover {
+            color: #ffd93d;
+        }
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: #ffd93d;
+            transition: width 0.3s;
+        }
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        /* ----- Hero ----- */
+        .hero {
+            padding: 80px 0 60px;
+            text-align: center;
+            position: relative;
+        }
+        .hero h1 {
+            font-size: 3.5rem;
+            font-weight: 900;
+            line-height: 1.2;
+            margin-bottom: 20px;
+            background: linear-gradient(135deg, #ffb3e6, #ffd93d, #80d4ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: none;
+            animation: glowPulse 3s ease-in-out infinite;
+        }
+        @keyframes glowPulse {
+            0% { filter: drop-shadow(0 0 10px rgba(255, 215, 0, 0.2)); }
+            50% { filter: drop-shadow(0 0 30px rgba(255, 215, 0, 0.6)); }
+            100% { filter: drop-shadow(0 0 10px rgba(255, 215, 0, 0.2)); }
+        }
+        .hero p {
+            font-size: 1.3rem;
+            color: #c8c0e0;
+            max-width: 700px;
+            margin: 0 auto 40px;
+        }
+        .hero .btn-group {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 16px;
+        }
+        .btn {
+            display: inline-block;
+            padding: 14px 36px;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 1.1rem;
+            transition: all 0.25s;
+            border: 2px solid transparent;
+            cursor: pointer;
+            background: rgba(255, 255, 255, 0.06);
+            backdrop-filter: blur(4px);
+            color: #f0eaff;
+            border-color: rgba(255, 255, 255, 0.15);
+        }
+        .btn-primary {
+            background: #7a5cff;
+            border-color: #7a5cff;
+            color: #fff;
+            box-shadow: 0 0 25px rgba(122, 92, 255, 0.4);
+        }
+        .btn-primary:hover {
+            background: #9a7cff;
+            border-color: #9a7cff;
+            transform: scale(1.04);
+            box-shadow: 0 0 40px rgba(122, 92, 255, 0.7);
+        }
+        .btn-outline {
+            border-color: rgba(255, 255, 255, 0.25);
+        }
+        .btn-outline:hover {
+            border-color: #ffd93d;
+            color: #ffd93d;
+            transform: scale(1.04);
+        }
+
+        /* ----- Features / About ----- */
+        .section {
+            padding: 70px 0;
+        }
+        .section-title {
+            font-size: 2.4rem;
+            font-weight: 700;
+            text-align: center;
+            margin-bottom: 50px;
+            background: linear-gradient(135deg, #f0eaff, #b8aaff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 30px;
+        }
+        .card {
+            background: rgba(255, 255, 255, 0.04);
+            backdrop-filter: blur(6px);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            border-radius: 24px;
+            padding: 28px 20px;
+            text-align: center;
+            transition: all 0.3s;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.2);
+        }
+        .card:hover {
+            transform: translateY(-6px);
+            border-color: rgba(122, 92, 255, 0.4);
+            background: rgba(255, 255, 255, 0.07);
+            box-shadow: 0 12px 48px rgba(122, 92, 255, 0.15);
+        }
+        .card i {
+            font-size: 3.2rem;
+            margin-bottom: 16px;
+            background: linear-gradient(135deg, #ff6ec7, #ffd93d);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .card h3 {
+            font-size: 1.3rem;
+            margin-bottom: 8px;
+        }
+        .card p {
+            color: #b8b0d0;
+            font-size: 0.95rem;
+        }
+
+        /* ----- Social Section (Join links) ----- */
+        .social-section {
+            background: rgba(0, 0, 0, 0.25);
+            border-radius: 40px;
+            padding: 50px 30px;
+            margin: 30px 0 50px;
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            backdrop-filter: blur(4px);
+        }
+        .social-section .section-title {
+            margin-bottom: 20px;
+        }
+        .social-grid {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 30px;
+        }
+        .social-item {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            background: rgba(255, 255, 255, 0.05);
+            padding: 14px 28px;
+            border-radius: 60px;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            transition: all 0.25s;
+            font-size: 1.2rem;
+            font-weight: 500;
+            min-width: 180px;
+            justify-content: center;
+        }
+    .social-item.store {
+    border-color: #ffd93d;
+    background: rgba(255, 215, 0, 0.08);
+}
+.social-item.store:hover {
+    background: rgba(255, 215, 0, 0.18);
+    box-shadow: 0 0 30px rgba(255, 215, 0, 0.2);
+}
+        .social-item i {
+            font-size: 2rem;
+            transition: transform 0.2s;
+        }
+        .social-item:hover {
+            background: rgba(255, 255, 255, 0.12);
+            transform: scale(1.04);
+            border-color: #ffd93d;
+            box-shadow: 0 0 30px rgba(255, 215, 0, 0.15);
+        }
+        .social-item:hover i {
+            transform: scale(1.1);
+        }
+        .social-item .label {
+            color: #f0eaff;
+        }
+        /* Brand colors on hover */
+        .social-item.whatsapp:hover i { color: #25D366; }
+        .social-item.instagram:hover i { color: #E4405F; }
+        .social-item.facebook:hover i { color: #1877F2; }
+
+        /* ----- Footer ----- */
+        footer {
+            text-align: center;
+            padding: 30px 0;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            color: #6a5a8a;
+            font-size: 0.9rem;
+        }
+        footer span {
+            color: #ff6ec7;
+        }
+
+        /* ----- Responsive ----- */
+        @media (max-width: 768px) {
+            .hero h1 { font-size: 2.4rem; }
+            .hero p { font-size: 1rem; }
+            .nav-links { gap: 16px; font-size: 0.9rem; }
+            .logo { font-size: 1.4rem; }
+            .social-grid { gap: 16px; }
+            .social-item { min-width: 140px; padding: 12px 20px; font-size: 1rem; }
+        }
+        @media (max-width: 480px) {
+            header { flex-direction: column; align-items: center; }
+            .hero { padding: 40px 0; }
+            .btn { padding: 12px 24px; font-size: 0.95rem; }
+            .section-title { font-size: 1.8rem; }
+        }
+
+        /* ----- Floating particles (optional) ----- */
+        .particle {
+            position: fixed;
+            border-radius: 50%;
+            pointer-events: none;
+            background: rgba(255, 215, 0, 0.1);
+            animation: floatParticle 20s infinite linear;
+            z-index: 0;
+        }
+        @keyframes floatParticle {
+            0% { transform: translate(0, 0) scale(1); opacity: 0.2; }
+            50% { opacity: 0.6; }
+            100% { transform: translate(100px, -200px) scale(0.5); opacity: 0; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Floating particles (decorative) -->
+    <div class="particle" style="width:8px;height:8px;top:10%;left:5%;animation-duration:22s;"></div>
+    <div class="particle" style="width:12px;height:12px;top:60%;left:85%;animation-duration:18s;background:rgba(255,110,199,0.1);"></div>
+    <div class="particle" style="width:6px;height:6px;top:30%;left:70%;animation-duration:25s;background:rgba(107,203,255,0.1);"></div>
+
+    <!-- ===== HEADER ===== -->
+    <header class="container">
+        <div class="logo"><img src="/storage/emulated/0/DCIM/Lift and shift/
+LS20260527155238.png" height="38p" width="auto" <i class="fas fa-dragon"> <br> </i>Weebos Emporium</div>
+        <nav class="nav-links">
+            <a href="#about">About</a>
+            <a href="#features">Features</a>
+            <a href="#join">Join</a>
+        </nav>
+    </header>
+
+    <!-- ===== HERO ===== -->
+    <section class="hero container fade-up" id="home">
+        <h1>Welcome to <br> Weebos Emporium</h1>
+        <p>Your ultimate destination for anime merch, otaku culture, and a community that speaks your language.</p>
+        <p style="font-size: 0.9rem; color: #9a8acf; margin-top: -15px; letter-spacing: 1px;">
+    ✦ curated by <strong style="color: #ffd93d;">Hriatzuala</strong> ✦
+</p>
+        <div class="btn-group">
+            <a href="#join" class="btn btn-primary"><i class="fas fa-store"></i> Explore</a>
+            <a href="#join" class="btn btn-outline"><i class="fas fa-users"></i> Join Family</a>
+        </div>
+    </section>
+
+    <!-- ===== ABOUT ===== -->
+    <section class="section container" id="about">
+        <h2 class="section-title fade-up">⚡ What We're About</h2>
+        <div class="grid">
+            <div class="card fade-up">
+    <i class="fas fa-laptop-code"></i>
+    <h3>Built by Hriatzuala</h3>
+    <p>Designed with love, passion, and a whole lot of anime energy. 💜</p>
+</div>
+            <div class="card fade-up">
+                <i class="fas fa-box-open"></i>
+                <h3>Premium Merch</h3>
+                <p>From exclusive figures to limited‑edition apparel – we curate the best for true fans.</p>
+            </div>
+            <div class="card fade-up">
+                <i class="fas fa-comments"></i>
+                <h3>Community Hub</h3>
+                <p>Connect with fellow weebs, share your collection, and geek out over your favorite shows.</p>
+            </div>
+            <div class="card fade-up">
+                <i class="fas fa-calendar-alt"></i>
+                <h3>Events & Giveaways</h3>
+                <p>Weekly watch parties, cosplay contests, and epic giveaways you won't want to miss.</p>
+            </div>
+            <div class="card fade-up">
+                <i class="fas fa-hand-holding-heart"></i>
+                <h3>Weeb Support</h3>
+                <p>We're a family – whether you need recommendations or just a place to belong, we've got you.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== SOCIAL JOIN SECTION ===== -->
+    <section class="container" id="join">
+        <div class="social-section fade-up">
+            <h2 class="section-title">🌸 Join the Lowres Family</h2>
+            <p style="text-align:center; color:#b8b0d0; margin-bottom: 40px;">
+                Click the icons below to connect with us on your favorite platform.
+            </p>
+            <div class="social-grid">
+                <!-- WhatsApp -->
+                <a href="#" class="social-item whatsapp" target="_blank">
+                    <i class="fab fa-whatsapp"></i>
+                    <span class="label">WhatsApp</span>
+                </a>
+                <!-- Instagram -->
+                <a href="#" class="social-item instagram" target="_blank">
+                    <i class="fab fa-instagram"></i>
+                    <span class="label">Instagram</span>
+                </a>
+                <!-- Facebook -->
+                <a href="#" class="social-item facebook" target="_blank">
+                    <i class="fab fa-facebook"></i>
+                    <span class="label">Facebook</span>
+                </a>
+                </a>
+                <!-- Website -->
+                <a href="https://payhip.com/WeebosEmporium" class="social-item" target="_blank" style="border-color: rgba(255, 215, 0, 0.3);">
+                <i class="fas fa-store" style="color: #ffd93d;"></i>
+                <span class="label">Store</span>
+                </a>
+            </div>
+            <p style="text-align:center; margin-top: 30px; color:#7a6a9a; font-size:0.9rem;">
+                <i class="fas fa-heart" style="color:#ff6ec7;"></i> 
+                We're waiting for you – come and be part of the magic!
+            </p>
+        </div>
+    </section>
+
+    <!-- ===== FOOTER ===== -->
+    <footer class="container">
+        <p>© 2026 <span>Weebos Emporium</span> — made with <i class="fas fa-heart" style="color:#ff6ec7;"></i> <br> for Mizo Weeb Community.</p>
+    </footer>
+
+    <!-- ===== SCRIPTS for scroll animations ===== -->
+    <script>
+        // Intersection Observer for fade-up
+        (function() {
+            const elements = document.querySelectorAll('.fade-up');
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                    }
+                });
+            }, { threshold: 0.15, rootMargin: '0px 0px -40px 0px' });
+            elements.forEach(el => observer.observe(el));
+
+            // Also trigger for any newly added elements (none)
+        })();
+
+        // Replace the # hrefs with your actual social links
+        // You can update these URLs directly in the HTML or here:
+        document.querySelectorAll('.social-item.whatsapp').forEach(a => a.href = 'https://chat.whatsapp.com/I8cgJlwXlVDC8Em6iJaVVS');
+        document.querySelectorAll('.social-item.instagram').forEach(a => a.href = 'https://www.instagram.com/weebos_emporium?igsh=bGhxZnJ6NncxaGs2');
+        document.querySelectorAll('.social-item.facebook').forEach(a => a.href = 'https://www.facebook.com/share/18xCELY394/');
+        document.querySelectorAll('.social-item.onlinestore').forEach(a => a.href = 'https://payhip.com/WeebosEmporium/');
+    
+ </script>
+    <div style="position: fixed; bottom: 20px; right: 20px; background: rgba(14,11,26,0.85); backdrop-filter: blur(4px); padding: 8px 16px; border-radius: 40px; border: 1px solid rgba(122,92,255,0.3); font-size: 0.7rem; color: #b8aaff; z-index: 999; box-shadow: 0 4px 20px rgba(0,0,0,0.5);">
+    <i class="fas fa-crown" style="color:#ffd93d;"></i> Hriatzuala dev
+</div>
+</body>
+</html>
